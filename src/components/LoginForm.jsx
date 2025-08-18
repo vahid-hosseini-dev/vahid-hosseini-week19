@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 function RegistrationForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
 
   const {
     register,
@@ -16,7 +15,7 @@ function RegistrationForm() {
 
   const onSubmit = (data) => console.log(data);
   const inputClass =
-    "font-yekan w-[400px] min-h-[53px] py-2 px-12 out rounded-2xl bg-[rgba(242,242,242,1)] text-[rgba(40,40,40,0.5)] text-base text-right";
+    "w-[400px] min-h-[53px] py-2 px-12 out rounded-2xl bg-[rgba(242,242,242,1)] text-[rgba(40,40,40,0.5)] text-base text-right";
   const formClass =
     "flex flex-col items-center bg-white gap-1 p-10 w-[460px] min-h-[596px] border-[#E4E4E4] border-1 border-solid rounded-4xl ";
 
@@ -28,7 +27,7 @@ function RegistrationForm() {
           src="./src/assets/img/BotoStart.png"
           alt="botostart"
         />
-        <span className="font-yekan mt-5 mb-10 text-2xl text-[rgba(40,40,40,1)]">
+        <span className="mt-5 mb-10 text-2xl text-[rgba(40,40,40,1)]">
           فرم ورود
         </span>
       </div>
@@ -39,7 +38,7 @@ function RegistrationForm() {
         placeholder="نام کاربری"
       />
 
-      <p className="font-yekan text-sm min-h-[35px] text-red-400 self-start">
+      <p className="text-sm min-h-[35px] text-red-400 self-start">
         {errors.username?.message}
       </p>
 
@@ -62,7 +61,7 @@ function RegistrationForm() {
           )}
         </button>
       </div>
-      <p className="font-yekan text-sm min-h-[35px] text-red-400 self-start">
+      <p className="text-sm min-h-[35px] text-red-400 self-start">
         {errors.password?.message}
       </p>
 
@@ -72,7 +71,7 @@ function RegistrationForm() {
         value="ثبت نام"
       />
       <Link
-        className="font-yekan text-sm self-start text-[rgba(58,139,237,1)]"
+        className="text-sm self-start text-[rgba(58,139,237,1)]"
         to="../register"
       >
         ایجاد حساب کاربری!
