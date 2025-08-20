@@ -5,7 +5,10 @@ const registerSchema = yup.object({
     .string()
     .required("نام کاربری الزامی است")
 
-    .matches(/^[A-Za-z]{6,}$/, "نام کاربری باید حداقل ۶ حرف انگلیسی باشد"),
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+      "نام کاربری باید حداقل ۶ کاراکتر و شامل حروف و عدد باشد"
+    ),
 
   password: yup
     .string()

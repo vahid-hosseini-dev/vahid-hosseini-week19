@@ -1,7 +1,6 @@
 import RegistrationForm from "../../components/RegistrationForm";
 
 const Register = () => {
-  console.log("register");
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen">

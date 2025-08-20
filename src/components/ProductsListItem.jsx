@@ -1,9 +1,15 @@
-function ProductsListItem() {
+function ProductsListItem({ product }) {
   return (
-    <li>
-      <button>ویرایش</button>
-      <button>حذف</button>
-    </li>
+    <tr >
+      <td>{product.name}</td>
+      <td>{product.stock}</td>
+      <td>{product.price}</td>
+      <td>{product.id}</td>
+      <td>
+        <button>ویرایش</button>
+        <button>حذف</button>
+      </td>
+    </tr>
   );
 }
 

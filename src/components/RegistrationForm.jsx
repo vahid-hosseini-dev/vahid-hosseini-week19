@@ -2,11 +2,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../schemas/registerSchema";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../services/config";
 
 function RegistrationForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -14,7 +16,20 @@ function RegistrationForm() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(registerSchema) });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const { confirmPassword, ...sendData } = data;
+
+    try {
+      const res = await api.post("/auth/register", sendData);
+      console.log("Register success:", res.data);
+      alert("ثبت نام با موفقیت انجام شد!");
+      navigate("/login");
+    } catch (err) {
+      console.error("Register error:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "ثبت نام انجام نشد");
+    }
+  };
+
   const inputClass =
     "w-[400px] min-h-[53px] py-2 px-12 out rounded-2xl bg-[rgba(242,242,242,1)] text-[rgba(40,40,40,0.5)] text-base text-right";
   const formClass =

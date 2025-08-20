@@ -4,8 +4,9 @@ import { registerSchema } from "../schemas/registerSchema";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function RegistrationForm() {
+function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+ 
 
   const {
     register,
@@ -80,4 +81,4 @@ function RegistrationForm() {
   );
 }
 
-export default RegistrationForm;
+export default LoginForm;
