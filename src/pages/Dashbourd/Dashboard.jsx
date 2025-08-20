@@ -1,7 +1,11 @@
 import ProfileBanner from "../../components/ProfileBanner";
 import ProductsList from "../../components/ProductsList";
+import Modal from "../../components/Modals/Modal";
+import { useState } from "react";
 
 const Dashboard = () => {
+  const [modalType, setModalType] = useState(null);
+
   return (
     <div className="flex flex-col justify-center items-center">
       <ProfileBanner />
@@ -14,11 +18,17 @@ const Dashboard = () => {
           />
           <span className="text-2xl">مدیریت کالا</span>
         </div>
-        <button className="w-[132px] h-[45px] cursor-pointer text-white bg-[rgba(85,163,240,.8)] hover:bg-[rgba(85,163,240,1)] rounded-xl">
+        <button
+          onClick={() => {
+            setModalType("addProduct");
+          }}
+          className="w-[132px] h-[45px] cursor-pointer text-white bg-[rgba(85,163,240,.8)] hover:bg-[rgba(85,163,240,1)] rounded-xl"
+        >
           افزودن محصول
         </button>
       </div>
       <ProductsList />
+        <Modal modalType={modalType} />
     </div>
   );
 };

@@ -21,7 +21,6 @@ function RegistrationForm() {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -43,7 +42,7 @@ function RegistrationForm() {
   };
 
   const inputClass =
-    "w-[400px] min-h-[53px] py-2 px-12 out rounded-2xl bg-[rgba(242,242,242,1)] text-[rgba(40,40,40,0.5)] text-base text-right";
+    "w-[400px] min-h-[53px] py-2 px-12 out rounded-2xl bg-[rgba(242,242,242,1)] text-[rgba(40,40,40,0.5)] text-base text-right outline-none";
   const formClass =
     "flex flex-col items-center bg-white gap-1 p-10 w-[460px] min-h-[523px] border-[#E4E4E4] border-1 border-solid rounded-4xl ";
 
