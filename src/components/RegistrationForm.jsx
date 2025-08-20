@@ -15,7 +15,7 @@ function RegistrationForm() {
     setToast({ message, type });
     setTimeout(() => {
       setToast(null);
-    }, 3000);
+    }, 2000);
   };
 
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ function RegistrationForm() {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
+  
   } = useForm({ resolver: yupResolver(registerSchema) });
 
   const onSubmit = async (data) => {
@@ -39,17 +39,10 @@ function RegistrationForm() {
       );
       setTimeout(() => {
         navigate("/login");
-      }, 3100);
+      }, 2100);
     } catch (err) {
-      console.error("Register error:", err.response?.data || err.message);
-
       if (err.response?.data?.message === "User already exists") {
-        setError("username", {
-          type: "server",
-          message: "این نام کاربری قبلاً ثبت شده است",
-        });
-      } else {
-        showToast(err.response?.data?.message || "ثبت نام انجام نشد", "error");
+        showToast("نام کاربری تکراری است", "error");
       }
     }
   };
@@ -129,7 +122,7 @@ function RegistrationForm() {
       </p>
 
       <input
-        className={`${inputClass} !bg-[rgba(85,163,240,1)] !text-center text-white mb-[10px]`}
+        className={`${inputClass} cursor-pointer !bg-[rgba(85,163,240,1)] !text-center text-white mb-[10px]`}
         type="submit"
         value="ثبت نام"
       />

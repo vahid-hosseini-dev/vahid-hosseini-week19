@@ -1,24 +1,51 @@
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { registerSchema } from "../schemas/registerSchema";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Toast } from "./Toast";
+import api from "../services/config";
 
-function LoginForm() {
+function RegistrationForm() {
   const [showPassword, setShowPassword] = useState(false);
- 
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = "success") => {
+    setToast({ message, type });
+    setTimeout(() => {
+      setToast(null);
+    }, 2000);
+  };
+
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(registerSchema) });
+    setError,
+  } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const res = await api.post("auth/login", data);
+      localStorage.setItem("token", res.data.token);
+      showToast(
+        "ورود با موفقیت انجام شد و در حال انتقال به پنل کاربری !",
+        "success"
+      );
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2100);
+    } catch (err) {
+      if (err.response?.data?.message === "Invalid credentials") {
+        showToast("نام کاربری یا رمز عبور اشتباه است", "error");
+      }
+    }
+  };
+
   const inputClass =
     "w-[400px] min-h-[53px] py-2 px-12 out rounded-2xl bg-[rgba(242,242,242,1)] text-[rgba(40,40,40,0.5)] text-base text-right";
   const formClass =
-    "flex flex-col items-center bg-white gap-1 p-10 w-[460px] min-h-[596px] border-[#E4E4E4] border-1 border-solid rounded-4xl ";
+    "flex flex-col items-center bg-white gap-1 p-10 w-[460px] min-h-[523px] border-[#E4E4E4] border-1 border-solid rounded-4xl ";
 
   return (
     <form className={formClass} onSubmit={handleSubmit(onSubmit)}>
@@ -29,13 +56,13 @@ function LoginForm() {
           alt="botostart"
         />
         <span className="mt-5 mb-10 text-2xl text-[rgba(40,40,40,1)]">
-          فرم ورود
+          فرم ثبت نام
         </span>
       </div>
 
       <input
         className={inputClass}
-        {...register("username")}
+        {...register("username", { required: "نام کاربری الزامی است" })}
         placeholder="نام کاربری"
       />
 
@@ -47,7 +74,7 @@ function LoginForm() {
         <input
           className={inputClass}
           type={showPassword ? "text" : "password"}
-          {...register("password")}
+          {...register("password", { required: "رمز عبور الزامی است" })}
           placeholder="رمز عبور"
         />
         <button
@@ -67,18 +94,23 @@ function LoginForm() {
       </p>
 
       <input
-        className={`${inputClass} !bg-[rgba(85,163,240,1)] !text-center text-white mb-[10px]`}
+        className={`${inputClass} cursor-pointer !bg-[rgba(85,163,240,1)] !text-center text-white mb-[10px]`}
         type="submit"
-        value="ثبت نام"
+        value="ورود"
       />
-      <Link
-        className="text-sm self-start text-[rgba(58,139,237,1)]"
-        to="../register"
-      >
-        ایجاد حساب کاربری!
-      </Link>
+
+      {toast ? (
+        <Toast message={toast.message} type={toast.type} />
+      ) : (
+        <Link
+          className="text-sm self-start text-[rgba(58,139,237,1)] "
+          to="../register"
+        >
+          ایجاد حساب کاربری!
+        </Link>
+      )}
     </form>
   );
 }
 
-export default LoginForm;
+export default RegistrationForm;
