@@ -3,17 +3,28 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../schemas/registerSchema";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Toast } from "./Toast";
 import api from "../services/config";
 
 function RegistrationForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = "success") => {
+    setToast({ message, type });
+    setTimeout(() => {
+      setToast(null);
+    }, 3000);
+  };
+
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm({ resolver: yupResolver(registerSchema) });
 
   const onSubmit = async (data) => {
@@ -22,11 +33,24 @@ function RegistrationForm() {
     try {
       const res = await api.post("/auth/register", sendData);
       console.log("Register success:", res.data);
-      alert("ثبت نام با موفقیت انجام شد!");
-      navigate("/login");
+      showToast(
+        "ثبت نام با موفقیت انجام شد و در حال انتقال به صفحه ورود !",
+        "success"
+      );
+      setTimeout(() => {
+        navigate("/login");
+      }, 3100);
     } catch (err) {
       console.error("Register error:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "ثبت نام انجام نشد");
+
+      if (err.response?.data?.message === "User already exists") {
+        setError("username", {
+          type: "server",
+          message: "این نام کاربری قبلاً ثبت شده است",
+        });
+      } else {
+        showToast(err.response?.data?.message || "ثبت نام انجام نشد", "error");
+      }
     }
   };
 
@@ -109,12 +133,17 @@ function RegistrationForm() {
         type="submit"
         value="ثبت نام"
       />
-      <Link
-        className="text-sm self-start text-[rgba(58,139,237,1)]"
-        to="../login"
-      >
-        حساب کاربری دارید؟
-      </Link>
+
+      {toast ? (
+        <Toast message={toast.message} type={toast.type} />
+      ) : (
+        <Link
+          className="text-sm self-start text-[rgba(58,139,237,1)]"
+          to="../login"
+        >
+          حساب کاربری دارید؟
+        </Link>
+      )}
     </form>
   );
 }
