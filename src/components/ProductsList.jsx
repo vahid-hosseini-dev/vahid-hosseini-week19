@@ -12,16 +12,16 @@ function ProductsList() {
   if (isError) return <p>Error loading products!</p>;
 
   return (
-    <table className="w-[1140px] h-[737px] border-[rgba(228,228,228,1)] mt-5 border rounded-t-4xl border-separate overflow-hidden">
+    <table className=" flex flex-col w-[1140px] h-[737px] border-[rgba(228,228,228,1)] mt-5 border rounded-t-4xl border-separate overflow-hidden">
       <thead className="h-[70px] bg-[rgba(242,242,242,1)]">
-        <tr>
-          <th>نام کالا</th>
-          <th>موجودی</th>
-          <th>قیمت</th>
-          <th>شناسه کالا</th>
+        <tr className="flex items-center text-right pr-15 pt-5">
+          <th className="w-1/6">نام کالا</th>
+          <th className="w-1/6">موجودی</th>
+          <th className="w-1/6">قیمت</th>
+          <th className="w-3/6">شناسه کالا</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className="flex flex-col items-right py-5">
         {data?.data.map((product) => (
           <ProductsListItem key={product.id} product={product} />
         ))}

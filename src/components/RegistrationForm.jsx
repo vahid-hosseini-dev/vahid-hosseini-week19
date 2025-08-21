@@ -28,7 +28,7 @@ function RegistrationForm() {
 
   const onSubmit = async (data) => {
     const { confirmPassword, ...sendData } = data;
-
+    
     try {
       const res = await api.post("/auth/register", sendData);
       console.log("Register success:", res.data);
