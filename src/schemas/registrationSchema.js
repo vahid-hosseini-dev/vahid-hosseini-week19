@@ -1,10 +1,9 @@
 import * as yup from "yup";
 
-const registerSchema = yup.object({
+const registrationSchema = yup.object({
   username: yup
     .string()
     .required("نام کاربری الزامی است")
-
     .matches(
       /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
       "نام کاربری باید حداقل ۶ کاراکتر و شامل حروف و عدد باشد"
@@ -23,6 +22,7 @@ const registerSchema = yup.object({
     .string()
     .required("تکرار رمز عبور الزامی است")
     .oneOf([yup.ref("password")], "رمز عبورها با هم مطابقت ندارند"),
+
 });
 
-export { registerSchema };
+export { registrationSchema };

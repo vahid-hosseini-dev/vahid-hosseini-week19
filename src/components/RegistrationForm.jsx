@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { registerSchema } from "../schemas/registerSchema";
+import { registrationSchema } from "../schemas/registrationSchema";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Toast } from "./Toast";
@@ -24,7 +24,7 @@ function RegistrationForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(registerSchema) });
+  } = useForm({ resolver: yupResolver(registrationSchema) });
 
   const onSubmit = async (data) => {
     const { confirmPassword, ...sendData } = data;
@@ -50,6 +50,8 @@ function RegistrationForm() {
     "w-[400px] min-h-[53px] py-2 px-12 out rounded-2xl bg-[rgba(242,242,242,1)] text-[rgba(40,40,40,0.5)] text-base text-right outline-none";
   const formClass =
     "flex flex-col items-center bg-white gap-1 p-10 w-[460px] min-h-[523px] border-[#E4E4E4] border-1 border-solid rounded-4xl";
+  const btnClass =
+    "w-[400px] min-h-[53px] py-2 px-12 out rounded-2xl bg-[rgba(242,242,242,1)] cursor-pointer !bg-[rgba(85,163,240,1)] outline-none text-base text-white !text-center mb-2 transform transition-transform duration-150 hover:ring-blue-600 active:scale-98 focus:ring-1 focus:ring-blue-600 focus:ring-offset-2";
 
   return (
     <form className={formClass} onSubmit={handleSubmit(onSubmit)}>
@@ -121,7 +123,7 @@ function RegistrationForm() {
       </p>
 
       <input
-        className={`${inputClass} cursor-pointer !bg-[rgba(85,163,240,1)] !text-center text-white mb-[10px]`}
+        className={`${btnClass} cursor-pointer !bg-[rgba(85,163,240,1)] !text-center text-white mb-[10px]`}
         type="submit"
         value="ثبت نام"
       />

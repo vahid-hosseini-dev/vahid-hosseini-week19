@@ -5,6 +5,7 @@ import { useState } from "react";
 
 const Dashboard = () => {
   const [modalType, setModalType] = useState(null);
+  
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -28,7 +29,7 @@ const Dashboard = () => {
         </button>
       </div>
       <ProductsList />
-        <Modal modalType={modalType} />
+        <Modal modalType={modalType} setModalType={setModalType} />
     </div>
   );
 };

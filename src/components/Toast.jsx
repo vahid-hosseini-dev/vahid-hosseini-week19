@@ -7,10 +7,10 @@ function getToastClasses(type) {
   }
 }
 
-const Toast = ({ type = "success", message }) => {
+const Toast = ({ message, type = "success" }) => {
   return (
     <div
-      className={`animate-bounce px-4 py-2 rounded-lg text-white text-sm shadow-md ${getToastClasses(
+      className={`max-w-[400px] m-auto animate-bounce px-4 py-2 rounded-lg text-white text-sm shadow-md ${getToastClasses(
         type
       )} flex justify-between items-center`}
     >

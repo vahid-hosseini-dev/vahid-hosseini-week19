@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Toast } from "./Toast";
 import api from "../services/config";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { loginSchema } from "../schemas/loginSchema";
 
 function RegistrationForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +23,7 @@ function RegistrationForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({ resolver: yupResolver(loginSchema) });
 
   const onSubmit = async (data) => {
     try {
@@ -33,7 +35,7 @@ function RegistrationForm() {
       );
       setTimeout(() => {
         navigate("/dashboard");
-      }, 2100);
+      }, 2000);
     } catch (err) {
       if (err.response?.data?.message === "Invalid credentials") {
         showToast("نام کاربری یا رمز عبور اشتباه است", "error");
@@ -45,6 +47,8 @@ function RegistrationForm() {
     "w-[400px] min-h-[53px] py-2 px-12 out rounded-2xl bg-[rgba(242,242,242,1)] text-[rgba(40,40,40,0.5)] text-base text-right outline-none";
   const formClass =
     "flex flex-col items-center bg-white gap-1 p-10 w-[460px] min-h-[523px] border-[#E4E4E4] border-1 border-solid rounded-4xl ";
+  const btnClass =
+    "w-[400px] min-h-[53px] py-2 px-12 out rounded-2xl bg-[rgba(242,242,242,1)] cursor-pointer !bg-[rgba(85,163,240,1)] outline-none text-base text-white !text-center mb-2 transform transition-transform duration-150 hover:ring-blue-600 active:scale-98 focus:ring-1 focus:ring-blue-600 focus:ring-offset-2";
 
   return (
     <form className={formClass} onSubmit={handleSubmit(onSubmit)}>
@@ -61,7 +65,7 @@ function RegistrationForm() {
 
       <input
         className={inputClass}
-        {...register("username", { required: "نام کاربری الزامی است" })}
+        {...register("username")}
         placeholder="نام کاربری"
       />
 
@@ -73,7 +77,7 @@ function RegistrationForm() {
         <input
           className={inputClass}
           type={showPassword ? "text" : "password"}
-          {...register("password", { required: "رمز عبور الزامی است" })}
+          {...register("password")}
           placeholder="رمز عبور"
         />
         <button
@@ -92,12 +96,7 @@ function RegistrationForm() {
         {errors.password?.message}
       </p>
 
-      <input
-        className={`${inputClass} cursor-pointer !bg-[rgba(85,163,240,1)] !text-center text-white mb-[10px]`}
-        type="submit"
-        value="ورود"
-      />
-
+      <input type="submit" value="ورود" className={`${btnClass}`} />
       {toast ? (
         <Toast message={toast.message} type={toast.type} />
       ) : (
