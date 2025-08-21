@@ -5,9 +5,11 @@ import api from "../../services/config";
 import { useState } from "react";
 import { Toast } from "../Toast";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 function AddModalForm({ setModalType }) {
   const [toast, setToast] = useState(null);
+  const queryClient = useQueryClient();
 
   const showToast = (message, type = "success") => {
     setToast({ message, type });
@@ -26,17 +28,19 @@ function AddModalForm({ setModalType }) {
   const onSubmit = async (data) => {
     try {
       const res = await api.post("/products", data);
+      queryClient.invalidateQueries(["products"]);
+
       showToast("ایجاد کالای جدید با موفقیت انجام شد", "success");
       setTimeout(() => {
         setModalType(null);
-      }, 2000);
+      }, 3000);
       console.log(res);
     } catch (err) {
       if (err.response?.data?.message === "Invalid or expired token") {
         showToast("دوباره لاگین کنید", "error");
         setTimeout(() => {
           navigate("/login");
-        }, 2000);
+        }, 3000);
       }
     }
   };

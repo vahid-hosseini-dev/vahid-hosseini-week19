@@ -4,8 +4,7 @@ import Modal from "../../components/Modals/Modal";
 import { useState } from "react";
 
 const Dashboard = () => {
-  const [modalType, setModalType] = useState(null);
-  
+  const [modalType, setModalType] = useState({});
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -21,15 +20,15 @@ const Dashboard = () => {
         </div>
         <button
           onClick={() => {
-            setModalType("addProduct");
+            setModalType({ ...modalType, type: "addProduct" });
           }}
           className="w-[132px] h-[45px] cursor-pointer text-white bg-[rgba(85,163,240,.8)] hover:bg-[rgba(85,163,240,1)] rounded-xl"
         >
           افزودن محصول
         </button>
       </div>
-      <ProductsList />
-        <Modal modalType={modalType} setModalType={setModalType} />
+      <ProductsList setModalType={setModalType} />
+      <Modal modalType={modalType} setModalType={setModalType} />
     </div>
   );
 };
