@@ -1,28 +1,65 @@
-function ProductsListItem({ product, setModalType, modalType }) {
+import { useContext, useEffect } from "react";
+import { productContext } from "../context/productContext";
+
+function ProductsListItem({
+  product,
+  setModalType,
+  modalType,
+  setSelectProduct,
+  selectProduct,
+}) {
+  const { productInfo, setProductInfo } = useContext(productContext);
+
+  const checkHandler = (e) => {
+    if (e.target.checked) {
+      setSelectProduct([...selectProduct, product.id]);
+    } else {
+      setSelectProduct(selectProduct.filter((id) => id !== product.id));
+    }
+  };
+
   return (
     <tr className="flex text-right pr-15 border-b-1 border-b-blue-300">
-      <td className="pl-40 w-1/6 h-15 pt-5">{product.name}</td>
-      <td className="pl-40 w-1/6 h-15 pt-5">{product.quantity}</td>
-      <td className="pl-40 w-1/6 h-15 pt-5">{product.price}</td>
-      <td className="pl-4 w-2/6 h-15 pt-5">{product.id}</td>
+      <td className="w-1/6 h-15 pt-5">{product.name}</td>
+      <td className="w-1/6 h-15 pt-5">{product.quantity}</td>
+      <td className="w-1/6 h-15 pt-5">{product.price}</td>
+      <td className="w-2/6 h-15 pt-5">{product.id}</td>
       <td className="w-1-6 h-15 pr-20 pt-5">
-        <button className="ml-5">
+        <button
+          onClick={() => {
+            setModalType({
+              ...modalType,
+              type: "edit",
+            });
+            setProductInfo(product);
+            console.log(productInfo);
+          }}
+          className="ml-2"
+        >
           <img
             className="cursor-pointer hover:scale-120 transition duration-150 ease-in-out"
             src="./src/assets/img/edit.png"
             alt="edit"
           />
         </button>
-        <button>
+        <button
+          onClick={() => {
+            setProductInfo(product);
+            setModalType({ ...modalType, type: "delete" });
+          }}
+        >
           <img
             className="cursor-pointer hover:scale-120 transition duration-150 ease-in-out"
-            onClick={() =>
-              setModalType({ ...modalType, type: "delete", id: product.id })
-            }
             src="./src/assets/img/trash.png"
             alt="trash"
           />
         </button>
+        <input
+          type="checkbox"
+          className="mr-2 size-5"
+          onChange={checkHandler}
+          checked={selectProduct.includes(product.id)}
+        />
       </td>
     </tr>
   );

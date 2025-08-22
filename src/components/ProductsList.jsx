@@ -3,15 +3,20 @@ import { useQuery } from "@tanstack/react-query";
 import ProductsListItem from "./ProductsListItem";
 import { useSearch } from "../hooks/useSearch";
 
-function ProductsList({ modalType, setModalType }) {
+function ProductsList({
+  modalType,
+  setModalType,
+  setSelectProduct,
+  selectProduct,
+}) {
   const { search } = useSearch();
   const { data, isLoading, isError } = useQuery({
     queryKey: ["products"],
     queryFn: () => api.get("/products?page=1&limit=10").then((res) => res.data),
   });
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error loading products!</p>;
+  if (isLoading) return <p>در حال بارگزاری .... </p>;
+  if (isError) return <p> هیچ محصولی یافت نشد </p>;
 
   const filteredProducts = data?.data.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
@@ -33,6 +38,8 @@ function ProductsList({ modalType, setModalType }) {
             setModalType={setModalType}
             product={product}
             modalType={modalType}
+            setSelectProduct={setSelectProduct}
+            selectProduct={selectProduct}
           />
         ))}
       </tbody>

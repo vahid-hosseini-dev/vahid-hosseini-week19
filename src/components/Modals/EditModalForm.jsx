@@ -2,12 +2,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { addModalSchema } from "../../schemas/addModalSchema";
 import api from "../../services/config";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Toast } from "../Toast";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
-function AddModalForm({ setModalType }) {
+import { productContext } from "../../context/productContext";
+
+function EditModalForm({ setModalType }) {
+  const { productInfo } = useContext(productContext);
   const [toast, setToast] = useState(null);
   const queryClient = useQueryClient();
 
@@ -22,15 +25,31 @@ function AddModalForm({ setModalType }) {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({ resolver: yupResolver(addModalSchema) });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (productInfo) {
+      reset({
+        name: productInfo.name || "",
+        quantity: productInfo.quantity || "",
+        price: productInfo.price || "",
+      });
+    }
+  }, [productInfo, reset]);
+
   const onSubmit = async (data) => {
     try {
-      const res = await api.post("/products", data);
+      const res = await api.put(`/products/${productInfo.id}`, {
+        name: data.name,
+        price: data.price,
+        quantity: data.quantity,
+      });
       queryClient.invalidateQueries(["products"]);
 
-      showToast("ایجاد کالای جدید با موفقیت انجام شد", "success");
+      showToast("ثبت تغییرات با موفقیت انجام شد", "success");
       setTimeout(() => {
         setModalType(null);
       }, 2000);
@@ -62,7 +81,7 @@ function AddModalForm({ setModalType }) {
         className={formClass}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <p className="text-center">ایجاد محصول جدید</p>
+        <p className="text-center">ویرایش اطلاعات</p>
         <div className="flex flex-col gap-1 text-right">
           <label className="mr-5" htmlFor="name">
             نام کالا
@@ -109,7 +128,11 @@ function AddModalForm({ setModalType }) {
         </div>
 
         <div className="flex justify-around mt-5">
-          <input type="submit" className={`${btnClass}`} value={"ایجاد"} />
+          <input
+            type="submit"
+            className={`${btnClass}`}
+            value={"ثبت اطلاعات جدید"}
+          />
 
           <input
             type="button"
@@ -124,4 +147,4 @@ function AddModalForm({ setModalType }) {
   );
 }
 
-export default AddModalForm;
+export default EditModalForm;

@@ -1,11 +1,14 @@
 import api from "../../services/config";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Toast } from "../Toast";
 import { useNavigate } from "react-router-dom";
 
-function DeleteModal({ setModalType, modaltype }) {
-  const { id } = modaltype;
-  console.log(modaltype);
+import { productContext } from "../../context/productContext";
+
+function DeleteModal({ setModalType, selectProduct }) {
+  const { productInfo } = useContext(productContext);
+  console.log("Deleting product id:", productInfo.id);
+
   const [toast, setToast] = useState(null);
 
   const showToast = (message, type = "success") => {
@@ -19,13 +22,15 @@ function DeleteModal({ setModalType, modaltype }) {
 
   const deleteHandler = async () => {
     try {
-      console.log(modaltype.id);
-      const res = await api.delete(`/products/${modaltype.id}`);
+      if (productInfo.id) {
+        await api.delete(`/products/${productInfo.id}`);
+      } else if (selectProduct.length > 0) {
+        await api.delete("/products", { data: { ids: selectProduct } });
+      }
       showToast("کالا از لیست حذف شد", "success");
       setTimeout(() => {
         setModalType(null);
-      }, 3000);
-      console.log(res);
+      }, 2000);
     } catch (err) {
       console.log(err.response?.data);
       if (
@@ -36,7 +41,7 @@ function DeleteModal({ setModalType, modaltype }) {
         showToast("دوباره لاگین کنید", "error");
         setTimeout(() => {
           navigate("/login");
-        }, 3000);
+        }, 2000);
       }
     }
   };
