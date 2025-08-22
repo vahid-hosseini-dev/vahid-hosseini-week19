@@ -1,18 +1,45 @@
-import * as React from 'react';
-import Typography from '@mui/material/Typography';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+function Pagination({ page, setPage, totalPages }) {
+  const previousHandler = () => {
+    if (page > 1) setPage((p) => p - 1);
+  };
 
-export default function PaginationControlled() {
-  const [page, setPage] = React.useState(1);
-  const handleChange = (event, value) => {
-    setPage(value);
+  const nextHandler = () => {
+    if (page < totalPages) setPage((p) => p + 1);
   };
 
   return (
-    <Stack spacing={2}>
-      <Typography>Page: {page}</Typography>
-      <Pagination count={10} page={page} onChange={handleChange} />
-    </Stack>
+    <div className="flex flex-row-reverse justify-center items-center gap-5 mt-4">
+      <button
+        onClick={previousHandler}
+        disabled={page === 1}
+        className="px-3 py-1 border rounded disabled:opacity-50 "
+      >
+        قبلی
+      </button>
+
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+        <button
+          key={num}
+          onClick={() => setPage(num)}
+          className={`px-3 py-1 border rounded ${
+            page === num
+              ? "bg-[rgba(85,163,240,1)] text-white font-bold"
+              : "bg-white"
+          }`}
+        >
+          {num}
+        </button>
+      ))}
+
+      <button
+        onClick={nextHandler}
+        disabled={page === totalPages}
+        className="px-3 py-1 border rounded disabled:opacity-50 "
+      >
+        بعدی
+      </button>
+    </div>
   );
 }
+
+export default Pagination;
