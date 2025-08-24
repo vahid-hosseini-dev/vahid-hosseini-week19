@@ -5,6 +5,7 @@ import { Toast } from "./Toast";
 import api from "../services/config";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../schemas/loginSchema";
+import { setCookie } from "../utils/cookie";
 
 function RegistrationForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -28,7 +29,7 @@ function RegistrationForm() {
   const onSubmit = async (data) => {
     try {
       const res = await api.post("auth/login", data);
-      localStorage.setItem("token", res.data.token);
+      setCookie("token", res.data.token);
       showToast(
         "ورود با موفقیت انجام شد و در حال انتقال به پنل کاربری !",
         "success"
