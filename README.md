@@ -2,9 +2,9 @@
 
 A modern warehouse management frontend built with **React**, **Tailwind CSS**, and **Material UI**, featuring form validation, routing, and API integration.
 
+<img width="905" height="935" alt="image" src="https://github.com/user-attachments/assets/2b5f746a-33c8-422d-9046-fced68d2a8d1" />
 <img width="584" height="833" alt="image" src="https://github.com/user-attachments/assets/0fe91198-ba67-4616-b7de-d0feffdca361" />
-<img width="541" height="725" alt="image" src="https://github.com/user-attachments/assets/a82f7015-8d91-4c59-b5c8-79fbbe0031e1" />
-<img width="1198" height="781" alt="image" src="https://github.com/user-attachments/assets/d351ed65-e697-481f-bef5-c45bc7047356" />
+<img width="584" height="725" alt="image" src="https://github.com/user-attachments/assets/a82f7015-8d91-4c59-b5c8-79fbbe0031e1" />
 
 
 ## ✨ Features
